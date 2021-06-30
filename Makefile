@@ -43,9 +43,9 @@ test-integ:
 
 
 install-python: .venv
-	.venv/bin/pip install -e ./lib/todo-api
+	.venv/bin/pip install  -e ./lib/todo-api 
 ifneq ($(wildcard ./lib/todo-api/test-requirements.txt),)
-	.venv/bin/pip install -r ./lib/todo-api/test-requirements.txt
+	.venv/bin/pip install  -r ./lib/todo-api/test-requirements.txt 
 endif
 
 install-artillery:
@@ -64,6 +64,6 @@ deploy:
 
 .venv:
 	$(VIRTUALENV) .venv
-	.venv/bin/pip install --upgrade pip
+	.venv/bin/pip install --upgrade pip==20.2.3
 	.venv/bin/pip install --upgrade setuptools
 	.venv/bin/pip install --upgrade wheel
