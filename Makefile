@@ -10,6 +10,8 @@ VIRTUALENV := $(PYTHON) -m venv
 export PYTHONUNBUFFERED := 1
 export PATH := var:$(PATH):$(VENV_DIR)/bin
 export TABLE_NAME := todo
+export AWS_REGION = eu-west-1
+export TODO_API_ENDPOINT=https://5yvisnnmth.execute-api.eu-west-1.amazonaws.com/prod
 FUNCTION_DIR = lib/todo-api
 
 .DEFAULT_GOAL := lint
@@ -39,13 +41,13 @@ test:
 .PHONY: test
 
 test-integ:
-	TODO_API_ENDPOINT=$(shell aws cloudformation describe-stacks --stack-name ServerlessTodoApi-Dev-ServerlessTodoApi-Infra --query "Stacks[0].Outputs[?OutputKey=='todoApiEndpoint6114C0A4'].OutputValue" --output text) npm run test
+	npm run test
 
 
 install-python: .venv
-	.venv/bin/pip install  -e ./lib/todo-api 
+	.venv/bin/pip install -e ./lib/todo-api
 ifneq ($(wildcard ./lib/todo-api/test-requirements.txt),)
-	.venv/bin/pip install  -r ./lib/todo-api/test-requirements.txt 
+	.venv/bin/pip install -r ./lib/todo-api/test-requirements.txt
 endif
 
 install-artillery:
@@ -64,6 +66,6 @@ deploy:
 
 .venv:
 	$(VIRTUALENV) .venv
-	.venv/bin/pip install --upgrade pip==20.2.3
+	.venv/bin/pip install --upgrade pip
 	.venv/bin/pip install --upgrade setuptools
 	.venv/bin/pip install --upgrade wheel
